@@ -53,6 +53,12 @@
   background: rgba(188, 111, 241, 0.18);
 }
 
+.selectedRow {
+  background: rgba(255, 159, 28, 0.14);
+  outline: 1px solid rgba(255, 159, 28, 0.28);
+  outline-offset: -1px;
+}
+
 .companyCell {
   width: 190px;
 }

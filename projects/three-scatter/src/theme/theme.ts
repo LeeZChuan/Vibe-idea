@@ -15,6 +15,8 @@ export const THEME = {
     pointZero: '#c480e8',
     // hover 高亮（球体变色）
     hoverPoint: '#FFE45C',
+    // click 选中高亮（常驻）
+    clickedPoint: '#FF9F1C',
   },
 } as const
 

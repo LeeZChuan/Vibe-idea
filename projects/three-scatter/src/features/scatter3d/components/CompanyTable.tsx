@@ -10,6 +10,8 @@ export function CompanyTable() {
   const zMetricId = useScatterStore((s) => s.zMetricId)
   const hoveredCompanyId = useScatterStore((s) => s.hoveredCompanyId)
   const setHoveredCompanyId = useScatterStore((s) => s.setHoveredCompanyId)
+  const selectedCompanyId = useScatterStore((s) => s.selectedCompanyId)
+  const setSelectedCompanyId = useScatterStore((s) => s.setSelectedCompanyId)
 
   const xMetric = useMemo(() => getMetricById(xMetricId), [xMetricId])
   const yMetric = useMemo(() => getMetricById(yMetricId), [yMetricId])
@@ -44,15 +46,17 @@ export function CompanyTable() {
           <tbody>
             {points.map((p) => {
               const active = hoveredCompanyId === p.id
+              const selected = selectedCompanyId === p.id
               return (
                 <tr
                   key={p.id}
                   ref={(el) => {
                     rowRefs.current[p.id] = el
                   }}
-                  className={active ? styles.activeRow : undefined}
+                  className={`${active ? styles.activeRow : ''} ${selected ? styles.selectedRow : ''}`.trim() || undefined}
                   onMouseEnter={() => setHoveredCompanyId(p.id)}
                   onMouseLeave={() => setHoveredCompanyId(null)}
+                  onClick={() => setSelectedCompanyId(selectedCompanyId === p.id ? null : p.id)}
                 >
                   <td className={styles.companyCell}>
                     <div className={styles.companyName}>{p.label}</div>

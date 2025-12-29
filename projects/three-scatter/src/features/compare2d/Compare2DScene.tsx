@@ -12,6 +12,8 @@ export function Compare2DScene(props: {
 }) {
   const hoveredCompanyId = useScatterStore((s) => s.hoveredCompanyId)
   const setHoveredCompanyId = useScatterStore((s) => s.setHoveredCompanyId)
+  const selectedCompanyId = useScatterStore((s) => s.selectedCompanyId)
+  const setSelectedCompanyId = useScatterStore((s) => s.setSelectedCompanyId)
 
   const projected = useMemo(() => {
     return props.points.map((p) => ({
@@ -21,6 +23,7 @@ export function Compare2DScene(props: {
   }, [props.points, props.plane])
 
   const hoveredPoint = hoveredCompanyId ? projected.find((p) => p.id === hoveredCompanyId) ?? null : null
+  const selectedPoint = selectedCompanyId ? projected.find((p) => p.id === selectedCompanyId) ?? null : null
 
   return (
     <group>
@@ -34,6 +37,8 @@ export function Compare2DScene(props: {
           color={THEME.colors.pointPos}
           emissive={THEME.colors.pointPos}
           emissiveIntensity={0.18}
+          transparent
+          opacity={hoveredCompanyId ? 0.2 : 1}
         />
         {projected.map((p) => (
           <Instance
@@ -42,9 +47,26 @@ export function Compare2DScene(props: {
             onPointerOver={() => setHoveredCompanyId(p.id)}
             onPointerMove={() => setHoveredCompanyId(p.id)}
             onPointerOut={() => setHoveredCompanyId(null)}
+            onClick={(e) => {
+              e.stopPropagation()
+              setSelectedCompanyId(selectedCompanyId === p.id ? null : p.id)
+            }}
           />
         ))}
       </Instances>
+
+      {selectedPoint ? (
+        <mesh position={selectedPoint.position2d}>
+          <sphereGeometry args={[0.24, 18, 18]} />
+          <meshStandardMaterial
+            color={THEME.colors.clickedPoint}
+            emissive={THEME.colors.clickedPoint}
+            emissiveIntensity={0.95}
+            transparent
+            opacity={0.95}
+          />
+        </mesh>
+      ) : null}
 
       {hoveredPoint ? (
         <mesh position={hoveredPoint.position2d}>

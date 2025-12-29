@@ -6,10 +6,12 @@ type ScatterState = {
   yMetricId: MetricId
   zMetricId: MetricId
   hoveredCompanyId: string | null
+  selectedCompanyId: string | null
   setXMetricId: (id: MetricId) => void
   setYMetricId: (id: MetricId) => void
   setZMetricId: (id: MetricId) => void
   setHoveredCompanyId: (id: string | null) => void
+  setSelectedCompanyId: (id: string | null) => void
 }
 
 export const useScatterStore = create<ScatterState>((set) => ({
@@ -17,10 +19,12 @@ export const useScatterStore = create<ScatterState>((set) => ({
   yMetricId: 'marketCap',
   zMetricId: 'revenue',
   hoveredCompanyId: null,
+  selectedCompanyId: null,
   setXMetricId: (id) => set({ xMetricId: id }),
   setYMetricId: (id) => set({ yMetricId: id }),
   setZMetricId: (id) => set({ zMetricId: id }),
   setHoveredCompanyId: (id) => set({ hoveredCompanyId: id }),
+  setSelectedCompanyId: (id) => set({ selectedCompanyId: id }),
 }))
 
 

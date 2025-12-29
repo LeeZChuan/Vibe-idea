@@ -8,6 +8,7 @@ export function ScatterCanvas() {
   const xMetricId = useScatterStore((s) => s.xMetricId)
   const yMetricId = useScatterStore((s) => s.yMetricId)
   const zMetricId = useScatterStore((s) => s.zMetricId)
+  const setSelectedCompanyId = useScatterStore((s) => s.setSelectedCompanyId)
 
   const snapshot = useMemo(() => {
     return scatterDataManager.getSnapshot({ xMetricId, yMetricId, zMetricId, range: 10 })
@@ -18,6 +19,7 @@ export function ScatterCanvas() {
       camera={{ position: [14, 12, 14], fov: 45, near: 0.1, far: 200 }}
       dpr={[1, 2]}
       gl={{ antialias: true }}
+      onPointerMissed={() => setSelectedCompanyId(null)}
     >
       <color attach="background" args={['#000000']} />
       <fog attach="fog" args={['#000000', 18, 60]} />

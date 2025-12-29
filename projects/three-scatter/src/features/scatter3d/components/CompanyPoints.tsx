@@ -9,13 +9,15 @@ import { THEME } from '../../../theme/theme'
 export function CompanyPoints(props: { points: ProjectedPoint[] }) {
   const hoveredCompanyId = useScatterStore((s) => s.hoveredCompanyId)
   const setHoveredCompanyId = useScatterStore((s) => s.setHoveredCompanyId)
+  const selectedCompanyId = useScatterStore((s) => s.selectedCompanyId)
+  const setSelectedCompanyId = useScatterStore((s) => s.setSelectedCompanyId)
   const xMetricId = useScatterStore((s) => s.xMetricId)
   const yMetricId = useScatterStore((s) => s.yMetricId)
   const zMetricId = useScatterStore((s) => s.zMetricId)
 
-  const hoveredPoint = hoveredCompanyId
-    ? props.points.find((p) => p.id === hoveredCompanyId) ?? null
-    : null
+  const hoveredPoint = hoveredCompanyId ? props.points.find((p) => p.id === hoveredCompanyId) ?? null : null
+  const selectedPoint = selectedCompanyId ? props.points.find((p) => p.id === selectedCompanyId) ?? null : null
+  const activePoint = hoveredPoint ?? selectedPoint
 
   const xMetric = getMetricById(xMetricId)
   const yMetric = getMetricById(yMetricId)
@@ -31,6 +33,8 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
           vertexColors
           emissive={THEME.colors.pointZero}
           emissiveIntensity={0.22}
+          transparent
+          opacity={hoveredCompanyId ? 0.2 : 1}
         />
 
         {props.points.map((p) => (
@@ -41,60 +45,82 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
             onPointerOver={() => setHoveredCompanyId(p.id)}
             onPointerMove={() => setHoveredCompanyId(p.id)}
             onPointerOut={() => setHoveredCompanyId(null)}
+            onClick={(e) => {
+              e.stopPropagation()
+              setSelectedCompanyId(selectedCompanyId === p.id ? null : p.id)
+            }}
           />
         ))}
       </Instances>
 
-      {hoveredPoint ? (
+      {/* click 选中：常驻高亮（橘黄色） */}
+      {selectedPoint ? (
+        <mesh position={selectedPoint.position}>
+          <sphereGeometry args={[0.28, 20, 20]} />
+          <meshStandardMaterial
+            color={THEME.colors.clickedPoint}
+            emissive={THEME.colors.clickedPoint}
+            emissiveIntensity={0.95}
+            transparent
+            opacity={0.95}
+            roughness={0.15}
+            metalness={0.0}
+          />
+        </mesh>
+      ) : null}
+
+      {activePoint ? (
         <>
-          {/* hover 高亮球体：叠加一个更大的亮黄球，让用户直观看到“点变色/被选中” */}
-          <mesh position={hoveredPoint.position}>
-            <sphereGeometry args={[0.26, 20, 20]} />
-            <meshStandardMaterial
-              color={THEME.colors.hoverPoint}
-              emissive={THEME.colors.hoverPoint}
-              emissiveIntensity={0.9}
-              transparent
-              opacity={0.92}
-              roughness={0.15}
-              metalness={0.0}
-            />
-          </mesh>
+          {/* hover 高亮球体：叠加亮黄（优先级高于 click） */}
+          {hoveredPoint ? (
+            <mesh position={hoveredPoint.position}>
+              <sphereGeometry args={[0.26, 20, 20]} />
+              <meshStandardMaterial
+                color={THEME.colors.hoverPoint}
+                emissive={THEME.colors.hoverPoint}
+                emissiveIntensity={0.9}
+                transparent
+                opacity={0.92}
+                roughness={0.15}
+                metalness={0.0}
+              />
+            </mesh>
+          ) : null}
 
           {/* 到三条轴的“垂线”（投影到 x/y/z 轴，交点分别为 (x,0,0)、(0,y,0)、(0,0,z) ） */}
           <Line
-            points={[hoveredPoint.position, [hoveredPoint.position[0], 0, 0]]}
+            points={[activePoint.position, [activePoint.position[0], 0, 0]]}
             color={THEME.colors.axisX}
             lineWidth={1}
           />
           <Line
-            points={[hoveredPoint.position, [0, hoveredPoint.position[1], 0]]}
+            points={[activePoint.position, [0, activePoint.position[1], 0]]}
             color={THEME.colors.axisY}
             lineWidth={1}
           />
           <Line
-            points={[hoveredPoint.position, [0, 0, hoveredPoint.position[2]]]}
+            points={[activePoint.position, [0, 0, activePoint.position[2]]]}
             color={THEME.colors.axisZ}
             lineWidth={1}
           />
 
           {/* 点本体 tooltip + 选中圆环 */}
-          <Html position={hoveredPoint.position} center distanceFactor={10} zIndexRange={[0, 20]} style={{ pointerEvents: 'none' }}>
+          <Html position={activePoint.position} center distanceFactor={10} zIndexRange={[0, 20]} style={{ pointerEvents: 'none' }}>
             <div className={styles.wrap}>
               <div className={styles.ring} />
               <div className={styles.tooltip}>
-                <div className={styles.tooltipTitle}>{hoveredPoint.label}</div>
+                <div className={styles.tooltipTitle}>{activePoint.label}</div>
                 <div className={styles.tooltipRow}>
                   <span className={styles.k}>{xMetric.label}</span>
-                  <span className={styles.v}>{formatMetric(xMetric.format, xMetric.unit, hoveredPoint.raw.x)}</span>
+                  <span className={styles.v}>{formatMetric(xMetric.format, xMetric.unit, activePoint.raw.x)}</span>
                 </div>
                 <div className={styles.tooltipRow}>
                   <span className={styles.k}>{yMetric.label}</span>
-                  <span className={styles.v}>{formatMetric(yMetric.format, yMetric.unit, hoveredPoint.raw.y)}</span>
+                  <span className={styles.v}>{formatMetric(yMetric.format, yMetric.unit, activePoint.raw.y)}</span>
                 </div>
                 <div className={styles.tooltipRow}>
                   <span className={styles.k}>{zMetric.label}</span>
-                  <span className={styles.v}>{formatMetric(zMetric.format, zMetric.unit, hoveredPoint.raw.z)}</span>
+                  <span className={styles.v}>{formatMetric(zMetric.format, zMetric.unit, activePoint.raw.z)}</span>
                 </div>
               </div>
             </div>
@@ -102,36 +128,36 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
 
           {/* 三个轴交点的数据标签（带单位） */}
           <Html
-            position={[hoveredPoint.position[0], 0, 0]}
+            position={[activePoint.position[0], 0, 0]}
             center
             distanceFactor={16}
             zIndexRange={[0, 20]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisX, color: THEME.colors.axisX }}>
-              {formatMetric(xMetric.format, xMetric.unit, hoveredPoint.raw.x)}
+              {formatMetric(xMetric.format, xMetric.unit, activePoint.raw.x)}
             </div>
           </Html>
           <Html
-            position={[0, hoveredPoint.position[1], 0]}
+            position={[0, activePoint.position[1], 0]}
             center
             distanceFactor={16}
             zIndexRange={[0, 20]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisY, color: THEME.colors.axisY }}>
-              {formatMetric(yMetric.format, yMetric.unit, hoveredPoint.raw.y)}
+              {formatMetric(yMetric.format, yMetric.unit, activePoint.raw.y)}
             </div>
           </Html>
           <Html
-            position={[0, 0, hoveredPoint.position[2]]}
+            position={[0, 0, activePoint.position[2]]}
             center
             distanceFactor={16}
             zIndexRange={[0, 20]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisZ, color: THEME.colors.axisZ }}>
-              {formatMetric(zMetric.format, zMetric.unit, hoveredPoint.raw.z)}
+              {formatMetric(zMetric.format, zMetric.unit, activePoint.raw.z)}
             </div>
           </Html>
         </>
