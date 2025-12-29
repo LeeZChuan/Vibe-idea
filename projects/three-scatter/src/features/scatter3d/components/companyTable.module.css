@@ -1,0 +1,76 @@
+.root {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 650;
+  opacity: 0.88;
+  padding: 0 4px;
+}
+
+.tableWrap {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(188, 111, 241, 0.18);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-align: left;
+  padding: 10px 10px;
+  background: rgba(82, 5, 123, 0.35);
+  border-bottom: 1px solid rgba(188, 111, 241, 0.18);
+  opacity: 0.9;
+}
+
+.table tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(188, 111, 241, 0.08);
+  vertical-align: top;
+}
+
+.table tbody tr:hover {
+  background: rgba(137, 44, 220, 0.12);
+}
+
+.activeRow {
+  background: rgba(188, 111, 241, 0.18);
+}
+
+.companyCell {
+  width: 110px;
+}
+
+.companyName {
+  font-weight: 650;
+  opacity: 0.92;
+}
+
+.companyYear {
+  margin-top: 2px;
+  opacity: 0.7;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+

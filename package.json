@@ -1,0 +1,16 @@
+{
+  "name": "vibe-idea",
+  "private": true,
+  "workspaces": [
+    "projects/*"
+  ],
+  "scripts": {
+    "dev:three-scatter": "npm run dev --workspace projects/three-scatter",
+    "build:three-scatter": "npm run build --workspace projects/three-scatter",
+    "preview:three-scatter": "npm run preview --workspace projects/three-scatter",
+    "dev": "npm run dev:three-scatter",
+    "build": "npm run build:three-scatter",
+    "preview": "npm run preview:three-scatter"
+  }
+}
+

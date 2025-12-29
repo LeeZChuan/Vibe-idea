@@ -1,0 +1,16 @@
+:root {
+  --c-bg: #000000;
+  --c-panel-bg: rgba(0, 0, 0, 0.78);
+
+  --c-axis-x: #5A9CB5;
+  --c-axis-y: #FACE68;
+  --c-axis-z: #FA6868;
+  --c-axis-tick: #FAAC68;
+  --c-axis-plane: #F7F6D3;
+
+  --c-point-pos: #BC6FF1;
+  --c-point-neg: #892CDC;
+  --c-point-zero: #52057B;
+}
+
+

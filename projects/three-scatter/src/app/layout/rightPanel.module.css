@@ -1,0 +1,35 @@
+.root {
+  height: 100%;
+  padding: 16px 14px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.header {
+  padding: 10px 10px 12px;
+  border: 1px solid rgba(188, 111, 241, 0.24);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(82, 5, 123, 0.22), rgba(137, 44, 220, 0.12));
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+
+.subtitle {
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.78;
+  line-height: 1.4;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+

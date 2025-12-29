@@ -1,0 +1,98 @@
+.root {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr var(--asideWidth, 360px);
+}
+
+.left {
+  position: relative;
+  min-width: 0;
+}
+
+.right {
+  position: relative;
+  min-width: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--c-panel-bg);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.rightCollapsed {
+  border-left: none;
+}
+
+.asideTopBar {
+  height: 44px;
+  padding: 0 10px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(82, 5, 123, 0.18);
+}
+
+.asideTitle {
+  font-size: 12px;
+  font-weight: 650;
+  opacity: 0.9;
+}
+
+.collapseBtn {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(188, 111, 241, 0.35);
+  background: rgba(137, 44, 220, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+}
+
+.asideContent {
+  height: calc(100% - 44px);
+}
+
+.resizeHandle {
+  position: absolute;
+  left: -6px;
+  top: 0;
+  height: 100%;
+  width: 12px;
+  cursor: col-resize;
+  z-index: 5;
+}
+
+.resizeHandle::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: rgba(188, 111, 241, 0.18);
+}
+
+.expandBtn {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(188, 111, 241, 0.35);
+  background: rgba(82, 5, 123, 0.28);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+}
+
+@media (max-width: 960px) {
+  .root {
+    grid-template-columns: 1fr;
+  }
+  .right {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+
