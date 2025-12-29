@@ -10,7 +10,9 @@
     "preview:three-scatter": "npm run preview --workspace projects/three-scatter",
     "dev": "npm run dev:three-scatter",
     "build": "npm run build:three-scatter",
-    "preview": "npm run preview:three-scatter"
+    "preview": "npm run preview:three-scatter",
+    "build:all": "npm run -ws --if-present build",
+    "build:pages": "npm run build:all && node scripts/build-pages.mjs"
   }
 }
 
