@@ -12,7 +12,7 @@ export const THEME = {
     // 点仍然保持紫色系
     pointPos: '#BC6FF1',
     pointNeg: '#892CDC',
-    pointZero: '#52057B',
+    pointZero: '#c480e8',
     // hover 高亮（球体变色）
     hoverPoint: '#FFE45C',
   },

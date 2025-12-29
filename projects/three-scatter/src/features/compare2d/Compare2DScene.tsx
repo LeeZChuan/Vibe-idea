@@ -31,15 +31,14 @@ export function Compare2DScene(props: {
         <meshStandardMaterial
           metalness={0.05}
           roughness={0.25}
-          vertexColors
+          color={THEME.colors.pointPos}
           emissive={THEME.colors.pointPos}
-          emissiveIntensity={0.12}
+          emissiveIntensity={0.18}
         />
         {projected.map((p) => (
           <Instance
             key={p.id}
             position={p.position2d}
-            color={p.color}
             onPointerOver={() => setHoveredCompanyId(p.id)}
             onPointerMove={() => setHoveredCompanyId(p.id)}
             onPointerOut={() => setHoveredCompanyId(null)}

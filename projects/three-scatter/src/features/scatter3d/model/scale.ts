@@ -1,6 +1,7 @@
 import type { MetricDef } from './metrics'
 import { toNumberOrZero } from './normalize'
 import type { CompanyYearRow, ProjectedPoint, Vec3 } from './types'
+import { THEME } from '../../../theme/theme'
 
 type Domain = readonly [number, number]
 
@@ -27,9 +28,9 @@ function mapToRange(value: number, domain: Domain, range: number): number {
 
 function signColor(value: number): Vec3 {
   // 点保持紫色系：更适合黑色背景、且正负值有区分
-  if (value > 0) return hexToVec3('#BC6FF1')
-  if (value < 0) return hexToVec3('#892CDC')
-  return hexToVec3('#52057B')
+  if (value > 0) return hexToVec3(THEME.colors.pointPos)
+  if (value < 0) return hexToVec3(THEME.colors.pointNeg)
+  return hexToVec3(THEME.colors.pointZero)
 }
 
 function hexToVec3(hex: string): Vec3 {

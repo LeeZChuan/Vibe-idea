@@ -29,7 +29,7 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
           metalness={0.1}
           roughness={0.25}
           vertexColors
-          emissive="#BC6FF1"
+          emissive={THEME.colors.pointZero}
           emissiveIntensity={0.22}
         />
 
