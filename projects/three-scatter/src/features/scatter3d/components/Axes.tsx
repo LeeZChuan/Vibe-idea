@@ -107,6 +107,7 @@ function axisTicks(args: {
           position={[pos, -args.tickLen - 0.55, 0]}
           center
           distanceFactor={16}
+          zIndexRange={[0, 20]}
           style={{ pointerEvents: 'none' }}
         >
           <div style={tickStyle(isZero)}>{formatTick(value, args.format, args.unit)}</div>
@@ -128,6 +129,7 @@ function axisTicks(args: {
           position={[args.tickLen + 0.8, pos, 0]}
           center
           distanceFactor={16}
+          zIndexRange={[0, 20]}
           style={{ pointerEvents: 'none' }}
         >
           <div style={tickStyle(isZero)}>{formatTick(value, args.format, args.unit)}</div>
@@ -149,6 +151,7 @@ function axisTicks(args: {
           position={[0, -args.tickLen - 0.55, pos]}
           center
           distanceFactor={16}
+          zIndexRange={[0, 20]}
           style={{ pointerEvents: 'none' }}
         >
           <div style={tickStyle(isZero)}>{formatTick(value, args.format, args.unit)}</div>

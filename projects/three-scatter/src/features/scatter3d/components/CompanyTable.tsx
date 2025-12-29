@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { MOCK_COMPANY_ROWS } from '../../../data/mock'
 import { getMetricById } from '../model/metrics'
-import { toNumberOrZero } from '../model/normalize'
 import { useScatterStore } from '../store/scatterStore'
+import { scatterDataManager } from '../../../data/dataManager'
 import styles from './companyTable.module.css'
 
 export function CompanyTable() {
@@ -15,6 +14,10 @@ export function CompanyTable() {
   const xMetric = useMemo(() => getMetricById(xMetricId), [xMetricId])
   const yMetric = useMemo(() => getMetricById(yMetricId), [yMetricId])
   const zMetric = useMemo(() => getMetricById(zMetricId), [zMetricId])
+
+  const points = useMemo(() => {
+    return scatterDataManager.getSnapshot({ xMetricId, yMetricId, zMetricId, range: 10 }).points
+  }, [xMetricId, yMetricId, zMetricId])
 
   const rowRefs = useRef<Record<string, HTMLTableRowElement | null>>({})
 
@@ -39,28 +42,24 @@ export function CompanyTable() {
             </tr>
           </thead>
           <tbody>
-            {MOCK_COMPANY_ROWS.map((r) => {
-              const x = toNumberOrZero(xMetric.get(r))
-              const y = toNumberOrZero(yMetric.get(r))
-              const z = toNumberOrZero(zMetric.get(r))
-              const active = hoveredCompanyId === r.id
+            {points.map((p) => {
+              const active = hoveredCompanyId === p.id
               return (
                 <tr
-                  key={r.id}
+                  key={p.id}
                   ref={(el) => {
-                    rowRefs.current[r.id] = el
+                    rowRefs.current[p.id] = el
                   }}
                   className={active ? styles.activeRow : undefined}
-                  onMouseEnter={() => setHoveredCompanyId(r.id)}
+                  onMouseEnter={() => setHoveredCompanyId(p.id)}
                   onMouseLeave={() => setHoveredCompanyId(null)}
                 >
                   <td className={styles.companyCell}>
-                    <div className={styles.companyName}>{r.name}</div>
-                    <div className={styles.companyYear}>{r.year}</div>
+                    <div className={styles.companyName}>{p.label}</div>
                   </td>
-                  <td className={styles.num}>{formatMetric(xMetric.format, x)}</td>
-                  <td className={styles.num}>{formatMetric(yMetric.format, y)}</td>
-                  <td className={styles.num}>{formatMetric(zMetric.format, z)}</td>
+                  <td className={styles.num}>{formatMetric(xMetric.format, p.raw.x)}</td>
+                  <td className={styles.num}>{formatMetric(yMetric.format, p.raw.y)}</td>
+                  <td className={styles.num}>{formatMetric(zMetric.format, p.raw.z)}</td>
                 </tr>
               )
             })}

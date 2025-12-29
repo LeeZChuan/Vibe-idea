@@ -47,6 +47,20 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
 
       {hoveredPoint ? (
         <>
+          {/* hover 高亮球体：叠加一个更大的亮黄球，让用户直观看到“点变色/被选中” */}
+          <mesh position={hoveredPoint.position}>
+            <sphereGeometry args={[0.26, 20, 20]} />
+            <meshStandardMaterial
+              color={THEME.colors.hoverPoint}
+              emissive={THEME.colors.hoverPoint}
+              emissiveIntensity={0.9}
+              transparent
+              opacity={0.92}
+              roughness={0.15}
+              metalness={0.0}
+            />
+          </mesh>
+
           {/* 到三条轴的“垂线”（投影到 x/y/z 轴，交点分别为 (x,0,0)、(0,y,0)、(0,0,z) ） */}
           <Line
             points={[hoveredPoint.position, [hoveredPoint.position[0], 0, 0]]}
@@ -65,7 +79,7 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
           />
 
           {/* 点本体 tooltip + 选中圆环 */}
-          <Html position={hoveredPoint.position} center distanceFactor={10} style={{ pointerEvents: 'none' }}>
+          <Html position={hoveredPoint.position} center distanceFactor={10} zIndexRange={[0, 20]} style={{ pointerEvents: 'none' }}>
             <div className={styles.wrap}>
               <div className={styles.ring} />
               <div className={styles.tooltip}>
@@ -91,6 +105,7 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
             position={[hoveredPoint.position[0], 0, 0]}
             center
             distanceFactor={16}
+            zIndexRange={[0, 20]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisX, color: THEME.colors.axisX }}>
@@ -101,6 +116,7 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
             position={[0, hoveredPoint.position[1], 0]}
             center
             distanceFactor={16}
+            zIndexRange={[0, 20]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisY, color: THEME.colors.axisY }}>
@@ -111,6 +127,7 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
             position={[0, 0, hoveredPoint.position[2]]}
             center
             distanceFactor={16}
+            zIndexRange={[0, 20]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisZ, color: THEME.colors.axisZ }}>

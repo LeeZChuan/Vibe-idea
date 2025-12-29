@@ -5,6 +5,7 @@ export function InteractionHint() {
   const [open, setOpen] = useState(false)
   const items = useMemo(
     () => [
+      { k: '2D 对比', v: '右侧面板点击「打开 2D 对比」（弹窗内 hover 会联动 3D 高亮）' },
       { k: '滚轮', v: '缩放' },
       { k: '左键拖拽', v: '旋转' },
       { k: 'Shift + 左键拖拽', v: '平移' },

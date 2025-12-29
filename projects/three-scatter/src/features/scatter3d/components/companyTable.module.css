@@ -54,17 +54,12 @@
 }
 
 .companyCell {
-  width: 110px;
+  width: 190px;
 }
 
 .companyName {
   font-weight: 650;
   opacity: 0.92;
-}
-
-.companyYear {
-  margin-top: 2px;
-  opacity: 0.7;
 }
 
 .num {

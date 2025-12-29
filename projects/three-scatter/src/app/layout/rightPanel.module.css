@@ -32,4 +32,23 @@
   gap: 10px;
 }
 
+.open2dBtn {
+  height: 36px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(188, 111, 241, 0.28);
+  background: rgba(137, 44, 220, 0.14);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.open2dBtn:hover {
+  border-color: rgba(250, 206, 104, 0.35);
+}
+
+.open2dBtn:active {
+  transform: translateY(1px);
+}
+
 

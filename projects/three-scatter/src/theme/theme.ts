@@ -13,6 +13,8 @@ export const THEME = {
     pointPos: '#BC6FF1',
     pointNeg: '#892CDC',
     pointZero: '#52057B',
+    // hover 高亮（球体变色）
+    hoverPoint: '#FFE45C',
   },
 } as const
 
