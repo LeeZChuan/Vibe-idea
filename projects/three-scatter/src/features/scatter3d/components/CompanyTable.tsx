@@ -23,9 +23,14 @@ export function CompanyTable() {
   }, [reportDate, xMetricId, yMetricId, zMetricId])
 
   const tableWrapRef = useRef<HTMLDivElement | null>(null)
+  const pointerOverTableRef = useRef(false)
   const rowRefs = useRef<Record<string, HTMLTableRowElement | null>>({})
 
   useEffect(() => {
+    // 关键：当鼠标就在表格上时，不做“自动滚动到高亮行”
+    // 否则滚动会不断改变鼠标下的行，触发新的 onMouseEnter -> hoveredCompanyId 更新 -> 再滚动，形成循环，最终滚到最后一行。
+    if (pointerOverTableRef.current) return
+
     const activeId = hoveredCompanyId ?? selectedCompanyId
     if (!activeId) return
     const rowEl = rowRefs.current[activeId]
@@ -45,7 +50,16 @@ export function CompanyTable() {
   return (
     <div className={styles.root}>
       <div className={styles.title}>公司列表（当前数据集）</div>
-      <div className={styles.tableWrap} ref={tableWrapRef}>
+      <div
+        className={styles.tableWrap}
+        ref={tableWrapRef}
+        onMouseEnter={() => {
+          pointerOverTableRef.current = true
+        }}
+        onMouseLeave={() => {
+          pointerOverTableRef.current = false
+        }}
+      >
         <table className={styles.table}>
           <thead>
             <tr>
