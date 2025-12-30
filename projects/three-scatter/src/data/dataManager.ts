@@ -51,7 +51,15 @@ class ScatterDataManager {
     const y = getMetricById(args.yMetricId)
     const z = getMetricById(args.zMetricId)
     const rows = this.getRows(args.reportDate)
-    const { points, domains } = projectRowsToPoints({ rows, xMetric: x, yMetric: y, zMetric: z, range: args.range })
+    const { points, domains } = projectRowsToPoints({
+      rows,
+      xMetric: x,
+      yMetric: y,
+      zMetric: z,
+      range: args.range,
+      // 主页面：给 domain 留白，避免点贴边
+      domainPadRatio: 0.1,
+    })
     return {
       points,
       domains,
@@ -95,7 +103,15 @@ class ScatterDataManager {
           })
       : []
 
-    const { points, domains } = projectRowsToPoints({ rows, xMetric: x, yMetric: y, zMetric: z, range: args.range })
+    const { points, domains } = projectRowsToPoints({
+      rows,
+      xMetric: x,
+      yMetric: y,
+      zMetric: z,
+      range: args.range,
+      // detail 页：给 domain 留白，避免点贴边
+      domainPadRatio: 0.1,
+    })
     return {
       points,
       domains,

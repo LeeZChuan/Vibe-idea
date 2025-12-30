@@ -23,13 +23,21 @@ export const THEME = {
     // click 选中高亮（常驻）
     clickedPoint: '#FF9F1C',
     // 轨迹线（detail 页同公司跨期轨迹）
-    // - 采用“同色由浅到深（透明度从 0.2 -> 1.0）”表达时间推进
     // - 颜色本身选用点的正值主色系，保证整体统一
     trajectory: '#BC6FF1',
   },
   trajectory: {
-    startOpacity: 0.2,
-    endOpacity: 1.0,
+    // 底层轨迹线：纯色、固定透明度（不做颜色/透明度渐变）
+    baseOpacity: 0.35,
+
+    // “沿轨迹运动的发亮效果”
+    // - 通过 dashed line + dashOffset 动画实现（10s 从起点跑到终点）
+    glowDurationSec: 10,
+    glowOpacity: 0.95,
+    // 单个高亮段的长度比例（相对总路径长度）
+    glowDashFraction: 0.14,
+    // 高亮段之间的间隔比例（设大一点，保证“只看到一个亮段在跑”）
+    glowGapFraction: 2.0,
   },
 } as const
 

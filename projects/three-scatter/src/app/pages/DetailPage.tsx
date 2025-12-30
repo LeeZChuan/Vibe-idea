@@ -62,17 +62,12 @@ export function DetailPage() {
             points={snapshot.points}
             dashed={false}
             color={THEME.colors.trajectory}
-            startOpacity={THEME.trajectory.startOpacity}
-            endOpacity={THEME.trajectory.endOpacity}
+            baseOpacity={THEME.trajectory.baseOpacity}
+            glowDurationSec={THEME.trajectory.glowDurationSec}
             showArrows
             arrowEvery={3}
+            targetPointRadius={0.18}
             showEndpoints
-            showLabels
-            getLabel={(p) => {
-              const parts = p.id.split('|')
-              const d = parts.length >= 2 ? parts[1] : ''
-              return d ? formatReportDateLabel(d) : null
-            }}
           />
         </ScatterCanvas>
       }
@@ -88,17 +83,6 @@ export function DetailPage() {
       }
     />
   )
-}
-
-function formatReportDateLabel(reportDate: string): string {
-  // 常见格式：YYYY-MM-DD（季报/年报）
-  const y = Number.parseInt(reportDate.slice(0, 4), 10)
-  const m = Number.parseInt(reportDate.slice(5, 7), 10)
-  if (!Number.isFinite(y) || !Number.isFinite(m)) return reportDate
-  // 12/31 常作为年报，其他按季度
-  if (m === 12) return `${y}FY`
-  const q = Math.ceil(m / 3)
-  return `${y}Q${q}`
 }
 
 

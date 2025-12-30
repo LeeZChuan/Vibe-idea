@@ -5,7 +5,7 @@ import { THEME } from '../../../theme/theme'
 
 type Domain = readonly [number, number]
 
-function computeSymmetricDomain(values: number[]): Domain {
+function computeSymmetricDomain(values: number[], padRatio: number): Domain {
   // 包含 0，且让正负对称（更适合金融指标的正负视觉对比）
   const withZero = values.concat([0])
   let maxAbs = 0
@@ -14,7 +14,8 @@ function computeSymmetricDomain(values: number[]): Domain {
     if (a > maxAbs) maxAbs = a
   }
   if (maxAbs === 0) return [-1, 1]
-  return [-maxAbs, maxAbs]
+  const padded = maxAbs * (1 + Math.max(0, padRatio))
+  return [-padded, padded]
 }
 
 function mapToRange(value: number, domain: Domain, range: number): number {
@@ -48,16 +49,23 @@ export function projectRowsToPoints(args: {
   yMetric: MetricDef
   zMetric: MetricDef
   range?: number
+  /**
+   * domain 额外留白比例（例如 0.2 表示在 maxAbs 基础上再扩 20%）
+   * 用于避免点贴边。
+   * - 目前 domain 是“包含 0 且正负对称”的策略，因此留白也是对称放大。
+   */
+  domainPadRatio?: number
 }): { points: ProjectedPoint[]; domains: { x: Domain; y: Domain; z: Domain } } {
   const range = args.range ?? 10
+  const domainPadRatio = args.domainPadRatio ?? 0
   const xVals = args.rows.map((r) => toNumberOrZero(args.xMetric.get(r)))
   const yVals = args.rows.map((r) => toNumberOrZero(args.yMetric.get(r)))
   const zVals = args.rows.map((r) => toNumberOrZero(args.zMetric.get(r)))
 
   const domains = {
-    x: computeSymmetricDomain(xVals),
-    y: computeSymmetricDomain(yVals),
-    z: computeSymmetricDomain(zVals),
+    x: computeSymmetricDomain(xVals, domainPadRatio),
+    y: computeSymmetricDomain(yVals, domainPadRatio),
+    z: computeSymmetricDomain(zVals, domainPadRatio),
   } as const
 
   const points: ProjectedPoint[] = args.rows.map((r, idx) => {
