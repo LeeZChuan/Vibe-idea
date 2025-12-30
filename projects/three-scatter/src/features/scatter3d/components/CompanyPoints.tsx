@@ -28,7 +28,7 @@ export function CompanyPoints(props: {
   return (
     <group>
       <Instances limit={props.points.length} castShadow={false} receiveShadow={false}>
-        <sphereGeometry args={[0.18, 16, 16]} />
+        <sphereGeometry args={[0.1, 16, 16]} />
         <meshStandardMaterial
           metalness={0.1}
           roughness={0.25}
@@ -58,7 +58,7 @@ export function CompanyPoints(props: {
       {/* click 选中：常驻高亮（橘黄色） */}
       {selectedPoint ? (
         <mesh position={selectedPoint.position}>
-          <sphereGeometry args={[0.28, 20, 20]} />
+          <sphereGeometry args={[0.22, 20, 20]} />
           <meshStandardMaterial
             color={THEME.colors.clickedPoint}
             emissive={THEME.colors.clickedPoint}
@@ -76,7 +76,7 @@ export function CompanyPoints(props: {
           {/* hover 高亮球体：叠加亮黄（优先级高于 click） */}
           {hoveredPoint ? (
             <mesh position={hoveredPoint.position}>
-              <sphereGeometry args={[0.26, 20, 20]} />
+              <sphereGeometry args={[0.20, 20, 20]} />
               <meshStandardMaterial
                 color={THEME.colors.hoverPoint}
                 emissive={THEME.colors.hoverPoint}

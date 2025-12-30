@@ -44,7 +44,8 @@ export function ScatterScene(props: {
         onSelectedPointIdChange={props.onSelectedPointIdChange ?? (() => {})}
         getPointSubtitle={props.getPointSubtitle}
       />
-      <Controls minDistance={axisSize * 1.1} maxDistance={axisSize * 4} />
+      {/* 放宽缩放：允许更贴近观察点（但仍保留一定距离避免穿模） */}
+      <Controls minDistance={axisSize * 0.4} maxDistance={axisSize * 4} />
     </>
   )
 }
