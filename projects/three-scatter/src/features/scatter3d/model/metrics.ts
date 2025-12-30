@@ -1,6 +1,7 @@
 import type { CompanyYearRow } from './types'
+import { DATASET, METRIC_ORDER } from '../../../data/dataset'
 
-export type MetricId = 'profitRate' | 'marketCap' | 'revenue'
+export type MetricId = string
 
 export type MetricDef = {
   id: MetricId
@@ -10,29 +11,25 @@ export type MetricDef = {
   format?: (n: number) => string
 }
 
-export const METRICS: MetricDef[] = [
-  {
-    id: 'profitRate',
-    label: '盈利率',
-    unit: '%',
-    get: (r) => r.profitRate,
-    format: (n) => `${(n * 100).toFixed(2)}%`,
-  },
-  {
-    id: 'marketCap',
-    label: '公司市值',
-    unit: 'B',
-    get: (r) => r.marketCap,
-    format: (n) => `${n.toFixed(2)}B`,
-  },
-  {
-    id: 'revenue',
-    label: '营业总收入',
-    unit: 'B',
-    get: (r) => r.revenue,
-    format: (n) => `${n.toFixed(2)}B`,
-  },
-]
+function inferUnit(label: string): string | undefined {
+  // 优先从中文全角括号里拿单位：例如 “毛利润率（%）” -> "%"
+  const m = label.match(/（([^）]+)）/)
+  if (m?.[1]) return m[1]
+  if (label.includes('%')) return '%'
+  return undefined
+}
+
+export const METRICS: MetricDef[] = METRIC_ORDER.map((id) => {
+  const meta = DATASET.metrics[id]
+  const label = meta?.label ?? id
+  const unit = inferUnit(label)
+  return {
+    id,
+    label,
+    unit,
+    get: (row) => row.metrics?.[id] ?? null,
+  }
+})
 
 export function getMetricById(id: MetricId): MetricDef {
   const found = METRICS.find((m) => m.id === id)

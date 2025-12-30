@@ -1,4 +1,5 @@
 import type { CompanyYearRow } from '../features/scatter3d/model/types'
+import { METRIC_ORDER } from './dataset'
 
 export function generateMockRowsUniformWide(args: {
   count: number
@@ -13,12 +14,13 @@ export function generateMockRowsUniformWide(args: {
     const id = `mock-${year}-${i + 1}`
     const name = `Company-${String(i + 1).padStart(3, '0')}`
 
-    // 更离散、更均匀：三个维度都尽量铺满范围
-    const profitRate = maybeNull(rng, args.nullRate) ? null : lerp(-0.5, 0.5, rng())
-    const marketCap = maybeNull(rng, args.nullRate) ? null : lerp(-200, 800, rng())
-    const revenue = maybeNull(rng, args.nullRate) ? null : lerp(-150, 650, rng())
+    const metrics: Record<string, number | null> = {}
+    for (const k of METRIC_ORDER) {
+      // 更离散、更均匀：尽量铺满范围（先写死一个通用范围，真实展示以 data.json 为准）
+      metrics[k] = maybeNull(rng, args.nullRate) ? null : lerp(-100, 100, rng())
+    }
 
-    out.push({ id, name, year, profitRate, marketCap, revenue })
+    out.push({ id, name, year, metrics })
   }
 
   return out

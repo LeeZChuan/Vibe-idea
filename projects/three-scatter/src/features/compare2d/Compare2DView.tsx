@@ -12,6 +12,7 @@ import * as THREE from 'three'
 export type ComparePlane = 'XY' | 'XZ' | 'YZ'
 
 export function Compare2DView(props: { plane: ComparePlane; variant?: 'main' | 'thumb' }) {
+  const reportDate = useScatterStore((s) => s.reportDate)
   const xMetricId = useScatterStore((s) => s.xMetricId)
   const yMetricId = useScatterStore((s) => s.yMetricId)
   const zMetricId = useScatterStore((s) => s.zMetricId)
@@ -19,8 +20,8 @@ export function Compare2DView(props: { plane: ComparePlane; variant?: 'main' | '
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null)
 
   const snapshot = useMemo(() => {
-    return scatterDataManager.getSnapshot({ xMetricId, yMetricId, zMetricId, range: 10 })
-  }, [xMetricId, yMetricId, zMetricId])
+    return scatterDataManager.getSnapshot({ reportDate, xMetricId, yMetricId, zMetricId, range: 10 })
+  }, [reportDate, xMetricId, yMetricId, zMetricId])
 
   const title = useMemo(() => {
     const x = getMetricById(xMetricId).label

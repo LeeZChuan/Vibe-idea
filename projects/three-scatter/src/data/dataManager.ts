@@ -1,7 +1,7 @@
 import { getMetricById, type MetricId } from '../features/scatter3d/model/metrics'
 import { projectRowsToPoints } from '../features/scatter3d/model/scale'
 import type { CompanyYearRow, ProjectedPoint } from '../features/scatter3d/model/types'
-import { generateMockRowsUniformWide } from './mock'
+import { DATASET, getLatestReportDate } from './dataset'
 
 export type ScatterDataSnapshot = {
   points: ProjectedPoint[]
@@ -16,22 +16,42 @@ export type ScatterDataSnapshot = {
  * - 对外统一输出：points/domains/metrics labels
  */
 class ScatterDataManager {
-  private rows: CompanyYearRow[]
+  private rowsByReportDate: Map<string, CompanyYearRow[]> = new Map()
 
   constructor() {
-    // 可复现的 mock 数据：后续接真实数据只要替换 rows 的来源
-    this.rows = generateMockRowsUniformWide({
-      count: 240,
-      seed: 20251229,
-      nullRate: 0.06,
-    })
+    // rows 按 reportDate 懒加载缓存
   }
 
-  getSnapshot(args: { xMetricId: MetricId; yMetricId: MetricId; zMetricId: MetricId; range?: number }): ScatterDataSnapshot {
+  private getRows(reportDate: string): CompanyYearRow[] {
+    const key = reportDate || getLatestReportDate()
+    const cached = this.rowsByReportDate.get(key)
+    if (cached) return cached
+
+    const year = Number.parseInt(String(key).slice(0, 4), 10) || new Date().getFullYear()
+
+    const rows: CompanyYearRow[] = DATASET.companies.map((c) => ({
+      id: c.marketCode,
+      name: c.name ?? c.marketCode,
+      year,
+      metrics: c.values?.[key] ?? {},
+    }))
+
+    this.rowsByReportDate.set(key, rows)
+    return rows
+  }
+
+  getSnapshot(args: {
+    reportDate: string
+    xMetricId: MetricId
+    yMetricId: MetricId
+    zMetricId: MetricId
+    range?: number
+  }): ScatterDataSnapshot {
     const x = getMetricById(args.xMetricId)
     const y = getMetricById(args.yMetricId)
     const z = getMetricById(args.zMetricId)
-    const { points, domains } = projectRowsToPoints({ rows: this.rows, xMetric: x, yMetric: y, zMetric: z, range: args.range })
+    const rows = this.getRows(args.reportDate)
+    const { points, domains } = projectRowsToPoints({ rows, xMetric: x, yMetric: y, zMetric: z, range: args.range })
     return {
       points,
       domains,

@@ -13,7 +13,7 @@ export function MetricSelect(props: {
       <select
         className={styles.select}
         value={props.value}
-        onChange={(e) => props.onChange(e.target.value as MetricId)}
+        onChange={(e) => props.onChange(e.target.value)}
       >
         {props.options.map((m) => (
           <option key={m.id} value={m.id}>

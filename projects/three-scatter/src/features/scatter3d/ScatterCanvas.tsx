@@ -5,14 +5,15 @@ import { ScatterScene } from './ScatterScene'
 import { useScatterStore } from './store/scatterStore'
 
 export function ScatterCanvas() {
+  const reportDate = useScatterStore((s) => s.reportDate)
   const xMetricId = useScatterStore((s) => s.xMetricId)
   const yMetricId = useScatterStore((s) => s.yMetricId)
   const zMetricId = useScatterStore((s) => s.zMetricId)
   const setSelectedCompanyId = useScatterStore((s) => s.setSelectedCompanyId)
 
   const snapshot = useMemo(() => {
-    return scatterDataManager.getSnapshot({ xMetricId, yMetricId, zMetricId, range: 10 })
-  }, [xMetricId, yMetricId, zMetricId])
+    return scatterDataManager.getSnapshot({ reportDate, xMetricId, yMetricId, zMetricId, range: 10 })
+  }, [reportDate, xMetricId, yMetricId, zMetricId])
 
   return (
     <Canvas

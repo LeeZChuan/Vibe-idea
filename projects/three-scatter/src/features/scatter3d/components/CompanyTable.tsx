@@ -5,6 +5,7 @@ import { scatterDataManager } from '../../../data/dataManager'
 import styles from './companyTable.module.css'
 
 export function CompanyTable() {
+  const reportDate = useScatterStore((s) => s.reportDate)
   const xMetricId = useScatterStore((s) => s.xMetricId)
   const yMetricId = useScatterStore((s) => s.yMetricId)
   const zMetricId = useScatterStore((s) => s.zMetricId)
@@ -18,8 +19,8 @@ export function CompanyTable() {
   const zMetric = useMemo(() => getMetricById(zMetricId), [zMetricId])
 
   const points = useMemo(() => {
-    return scatterDataManager.getSnapshot({ xMetricId, yMetricId, zMetricId, range: 10 }).points
-  }, [xMetricId, yMetricId, zMetricId])
+    return scatterDataManager.getSnapshot({ reportDate, xMetricId, yMetricId, zMetricId, range: 10 }).points
+  }, [reportDate, xMetricId, yMetricId, zMetricId])
 
   const rowRefs = useRef<Record<string, HTMLTableRowElement | null>>({})
 
