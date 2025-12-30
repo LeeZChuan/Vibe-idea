@@ -22,19 +22,30 @@ export function CompanyTable() {
     return scatterDataManager.getSnapshot({ reportDate, xMetricId, yMetricId, zMetricId, range: 10 }).points
   }, [reportDate, xMetricId, yMetricId, zMetricId])
 
+  const tableWrapRef = useRef<HTMLDivElement | null>(null)
   const rowRefs = useRef<Record<string, HTMLTableRowElement | null>>({})
 
   useEffect(() => {
-    if (!hoveredCompanyId) return
-    const el = rowRefs.current[hoveredCompanyId]
-    if (!el) return
-    el.scrollIntoView({ block: 'nearest' })
-  }, [hoveredCompanyId])
+    const activeId = hoveredCompanyId ?? selectedCompanyId
+    if (!activeId) return
+    const rowEl = rowRefs.current[activeId]
+    const wrapEl = tableWrapRef.current
+    if (!rowEl || !wrapEl) return
+
+    // 让高亮行尽量出现在 sticky header 正下方（避免被 header 遮住）
+    const th = wrapEl.querySelector('thead th') as HTMLElement | null
+    const headerH = th ? Math.ceil(th.getBoundingClientRect().height) : 0
+    const pad = 6
+
+    // rowEl.offsetTop 相对于 table；wrapEl 是滚动容器
+    const target = Math.max(0, rowEl.offsetTop - headerH - pad)
+    wrapEl.scrollTo({ top: target, behavior: 'auto' })
+  }, [hoveredCompanyId, selectedCompanyId])
 
   return (
     <div className={styles.root}>
       <div className={styles.title}>公司列表（当前数据集）</div>
-      <div className={styles.tableWrap}>
+      <div className={styles.tableWrap} ref={tableWrapRef}>
         <table className={styles.table}>
           <thead>
             <tr>

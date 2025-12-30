@@ -34,7 +34,8 @@
   z-index: 2;
   text-align: left;
   padding: 10px 10px;
-  background: rgba(82, 5, 123, 0.35);
+  /* 不透明表头，避免与 hover/选中高亮叠色造成“脏” */
+  background: rgb(28, 2, 44);
   border-bottom: 1px solid rgba(188, 111, 241, 0.18);
   opacity: 0.9;
 }
