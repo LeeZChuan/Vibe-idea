@@ -1,7 +1,7 @@
 import { getMetricById, type MetricId } from '../features/scatter3d/model/metrics'
 import { projectRowsToPoints } from '../features/scatter3d/model/scale'
 import type { CompanyYearRow, ProjectedPoint } from '../features/scatter3d/model/types'
-import { DATASET, getLatestReportDate } from './dataset'
+import { DATASET, getLatestReportDate, REPORT_PERIODS } from './dataset'
 
 export type ScatterDataSnapshot = {
   points: ProjectedPoint[]
@@ -51,6 +51,50 @@ class ScatterDataManager {
     const y = getMetricById(args.yMetricId)
     const z = getMetricById(args.zMetricId)
     const rows = this.getRows(args.reportDate)
+    const { points, domains } = projectRowsToPoints({ rows, xMetric: x, yMetric: y, zMetric: z, range: args.range })
+    return {
+      points,
+      domains,
+      metrics: { x, y, z },
+      axisLabels: { x: x.label, y: y.label, z: z.label },
+    }
+  }
+
+  getCompanySeriesSnapshot(args: {
+    companyId: string
+    reportDates?: string[]
+    xMetricId: MetricId
+    yMetricId: MetricId
+    zMetricId: MetricId
+    range?: number
+  }): ScatterDataSnapshot {
+    const x = getMetricById(args.xMetricId)
+    const y = getMetricById(args.yMetricId)
+    const z = getMetricById(args.zMetricId)
+
+    const company = DATASET.companies.find((c) => c.marketCode === args.companyId) ?? null
+
+    const reportDates = (args.reportDates ?? REPORT_PERIODS.map((p) => p.reportDate))
+      .filter(Boolean)
+      // 统一按时间升序，保证轨迹连线从早到晚
+      .slice()
+      .sort()
+
+    const rows: CompanyYearRow[] = company
+      ? reportDates
+          // 只取“确实有数据字典”的报告期；否则点会全部落在 (0,0,0) 干扰解读
+          .filter((d) => Boolean(company.values?.[d]))
+          .map((d) => {
+            const year = Number.parseInt(String(d).slice(0, 4), 10) || new Date().getFullYear()
+            return {
+              id: `${company.marketCode}|${d}`,
+              name: company.name ?? company.marketCode,
+              year,
+              metrics: company.values?.[d] ?? {},
+            }
+          })
+      : []
+
     const { points, domains } = projectRowsToPoints({ rows, xMetric: x, yMetric: y, zMetric: z, range: args.range })
     return {
       points,

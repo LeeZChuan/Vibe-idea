@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getMetricById } from '../model/metrics'
 import { useScatterStore } from '../store/scatterStore'
 import { scatterDataManager } from '../../../data/dataManager'
 import styles from './companyTable.module.css'
 
 export function CompanyTable() {
+  const navigate = useNavigate()
   const reportDate = useScatterStore((s) => s.reportDate)
   const xMetricId = useScatterStore((s) => s.xMetricId)
   const yMetricId = useScatterStore((s) => s.yMetricId)
@@ -83,6 +85,7 @@ export function CompanyTable() {
                   onMouseEnter={() => setHoveredCompanyId(p.id)}
                   onMouseLeave={() => setHoveredCompanyId(null)}
                   onClick={() => setSelectedCompanyId(selectedCompanyId === p.id ? null : p.id)}
+                  onDoubleClick={() => navigate(`/detail/${encodeURIComponent(p.id)}`)}
                 >
                   <td className={styles.companyCell}>
                     <div className={styles.companyName}>{p.label}</div>

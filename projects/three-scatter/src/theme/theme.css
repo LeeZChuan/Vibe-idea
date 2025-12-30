@@ -1,6 +1,9 @@
 :root {
   --c-bg: #000000;
   --c-panel-bg: rgba(0, 0, 0, 0.78);
+  --c-link: #8ab4ff;
+  --c-text-primary: rgba(255, 255, 255, 0.86);
+  --c-text-secondary: rgba(255, 255, 255, 0.72);
 
   --c-axis-x: #5A9CB5;
   --c-axis-y: #FACE68;
@@ -13,6 +16,7 @@
   --c-point-zero: #c480e8;
   --c-point-hover: #FFE45C;
   --c-point-clicked: #FF9F1C;
+  --c-trajectory: #BC6FF1;
 }
 
 

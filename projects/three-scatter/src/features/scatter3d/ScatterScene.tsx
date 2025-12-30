@@ -13,6 +13,11 @@ export function ScatterScene(props: {
   axisLabels?: { x: string; y: string; z: string }
   domains?: { x: readonly [number, number]; y: readonly [number, number]; z: readonly [number, number] }
   metrics?: { x: MetricDef; y: MetricDef; z: MetricDef }
+  hoveredPointId?: string | null
+  selectedPointId?: string | null
+  onHoveredPointIdChange?: (id: string | null) => void
+  onSelectedPointIdChange?: (id: string | null) => void
+  getPointSubtitle?: (p: ProjectedPoint) => string | null
 }) {
   const axisSize = props.axisSize ?? 10
   const axisLabels = props.axisLabels ?? { x: 'X', y: 'Y', z: 'Z' }
@@ -30,7 +35,15 @@ export function ScatterScene(props: {
       <GridPlanes size={axisSize * 2} />
       <Axes size={axisSize} domains={domains} metrics={metrics} />
       <AxisLabels size={axisSize} xLabel={axisLabels.x} yLabel={axisLabels.y} zLabel={axisLabels.z} />
-      <CompanyPoints points={props.points} />
+      <CompanyPoints
+        points={props.points}
+        metrics={metrics}
+        hoveredPointId={props.hoveredPointId ?? null}
+        selectedPointId={props.selectedPointId ?? null}
+        onHoveredPointIdChange={props.onHoveredPointIdChange ?? (() => {})}
+        onSelectedPointIdChange={props.onSelectedPointIdChange ?? (() => {})}
+        getPointSubtitle={props.getPointSubtitle}
+      />
       <Controls minDistance={axisSize * 1.1} maxDistance={axisSize * 4} />
     </>
   )

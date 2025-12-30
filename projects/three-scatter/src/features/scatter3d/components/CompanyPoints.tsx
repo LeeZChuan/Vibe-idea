@@ -1,27 +1,29 @@
 import { Html, Instances, Instance } from '@react-three/drei'
 import { Line } from '@react-three/drei'
 import type { ProjectedPoint } from '../model/types'
-import { useScatterStore } from '../store/scatterStore'
 import styles from './companyPoints.module.css'
-import { getMetricById } from '../model/metrics'
+import type { MetricDef } from '../model/metrics'
 import { THEME } from '../../../theme/theme'
 
-export function CompanyPoints(props: { points: ProjectedPoint[] }) {
-  const hoveredCompanyId = useScatterStore((s) => s.hoveredCompanyId)
-  const setHoveredCompanyId = useScatterStore((s) => s.setHoveredCompanyId)
-  const selectedCompanyId = useScatterStore((s) => s.selectedCompanyId)
-  const setSelectedCompanyId = useScatterStore((s) => s.setSelectedCompanyId)
-  const xMetricId = useScatterStore((s) => s.xMetricId)
-  const yMetricId = useScatterStore((s) => s.yMetricId)
-  const zMetricId = useScatterStore((s) => s.zMetricId)
+export function CompanyPoints(props: {
+  points: ProjectedPoint[]
+  metrics: { x: MetricDef; y: MetricDef; z: MetricDef }
+  hoveredPointId: string | null
+  selectedPointId: string | null
+  onHoveredPointIdChange: (id: string | null) => void
+  onSelectedPointIdChange: (id: string | null) => void
+  getPointSubtitle?: (p: ProjectedPoint) => string | null
+}) {
+  const hoveredPointId = props.hoveredPointId
+  const selectedPointId = props.selectedPointId
 
-  const hoveredPoint = hoveredCompanyId ? props.points.find((p) => p.id === hoveredCompanyId) ?? null : null
-  const selectedPoint = selectedCompanyId ? props.points.find((p) => p.id === selectedCompanyId) ?? null : null
+  const hoveredPoint = hoveredPointId ? props.points.find((p) => p.id === hoveredPointId) ?? null : null
+  const selectedPoint = selectedPointId ? props.points.find((p) => p.id === selectedPointId) ?? null : null
   const activePoint = hoveredPoint ?? selectedPoint
 
-  const xMetric = getMetricById(xMetricId)
-  const yMetric = getMetricById(yMetricId)
-  const zMetric = getMetricById(zMetricId)
+  const xMetric = props.metrics.x
+  const yMetric = props.metrics.y
+  const zMetric = props.metrics.z
 
   return (
     <group>
@@ -34,7 +36,7 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
           emissive={THEME.colors.pointZero}
           emissiveIntensity={0.22}
           transparent
-          opacity={hoveredCompanyId ? 0.2 : 1}
+          opacity={hoveredPointId ? 0.2 : 1}
         />
 
         {props.points.map((p) => (
@@ -42,12 +44,12 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
             key={p.id}
             position={p.position}
             color={p.color}
-            onPointerOver={() => setHoveredCompanyId(p.id)}
-            onPointerMove={() => setHoveredCompanyId(p.id)}
-            onPointerOut={() => setHoveredCompanyId(null)}
+            onPointerOver={() => props.onHoveredPointIdChange(p.id)}
+            onPointerMove={() => props.onHoveredPointIdChange(p.id)}
+            onPointerOut={() => props.onHoveredPointIdChange(null)}
             onClick={(e) => {
               e.stopPropagation()
-              setSelectedCompanyId(selectedCompanyId === p.id ? null : p.id)
+              props.onSelectedPointIdChange(selectedPointId === p.id ? null : p.id)
             }}
           />
         ))}
@@ -110,6 +112,12 @@ export function CompanyPoints(props: { points: ProjectedPoint[] }) {
               <div className={styles.ring} />
               <div className={styles.tooltip}>
                 <div className={styles.tooltipTitle}>{activePoint.label}</div>
+                {props.getPointSubtitle ? (
+                  (() => {
+                    const sub = props.getPointSubtitle?.(activePoint) ?? null
+                    return sub ? <div className={styles.tooltipSub}>{sub}</div> : null
+                  })()
+                ) : null}
                 <div className={styles.tooltipRow}>
                   <span className={styles.k}>{xMetric.label}</span>
                   <span className={styles.v}>{formatMetric(xMetric.format, xMetric.unit, activePoint.raw.x)}</span>

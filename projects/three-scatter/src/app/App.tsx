@@ -1,22 +1,14 @@
-import { MainLayout } from './layout/MainLayout'
-import { RightPanel } from './layout/RightPanel'
-import { ScatterCanvas } from '../features/scatter3d/ScatterCanvas'
-import { CompanyTable } from '../features/scatter3d/components/CompanyTable'
-import { InteractionHint } from '../features/scatter3d/components/InteractionHint'
-import styles from './app.module.css'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { MainPage } from './pages/MainPage'
+import { DetailPage } from './pages/DetailPage'
 
 export default function App() {
   return (
-    <MainLayout
-      left={<CompanyTable />}
-      center={<ScatterCanvas />}
-      right={
-        <div className={styles.rightWrap}>
-          <RightPanel />
-          <InteractionHint />
-        </div>
-      }
-    />
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/detail/:companyId" element={<DetailPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 
