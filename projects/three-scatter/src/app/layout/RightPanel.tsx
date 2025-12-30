@@ -3,7 +3,6 @@ import { MetricSelect } from '../../features/scatter3d/components/MetricSelect'
 import { ReportSelect } from '../../features/scatter3d/components/ReportSelect'
 import { useScatterStore } from '../../features/scatter3d/store/scatterStore'
 import { METRICS } from '../../features/scatter3d/model/metrics'
-import { CompanyTable } from '../../features/scatter3d/components/CompanyTable'
 import { Compare2DModal } from '../../features/compare2d/Compare2DModal'
 import styles from './rightPanel.module.css'
 import { REPORT_PERIODS } from '../../data/dataset'
@@ -36,8 +35,6 @@ export function RightPanel() {
       <button className={styles.open2dBtn} onClick={() => setOpen2d(true)}>
         打开 2D 对比
       </button>
-
-      <CompanyTable />
 
       <Compare2DModal open={open2d} onClose={() => setOpen2d(false)} />
     </div>
