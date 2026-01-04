@@ -11,13 +11,13 @@ export function AxisLabels(props: {
   const pad = 0.8
   return (
     <group>
-      <Html position={[size + pad, 0, 0]} center distanceFactor={12} zIndexRange={[0, 20]} style={{ pointerEvents: 'none' }}>
+      <Html position={[size + pad, 0, 0]} center distanceFactor={12} zIndexRange={[0, 5]} style={{ pointerEvents: 'none' }}>
         <div style={labelStyle(THEME.colors.axisX)}>{props.xLabel}</div>
       </Html>
-      <Html position={[0, size + pad, 0]} center distanceFactor={12} zIndexRange={[0, 20]} style={{ pointerEvents: 'none' }}>
+      <Html position={[0, size + pad, 0]} center distanceFactor={12} zIndexRange={[0, 5]} style={{ pointerEvents: 'none' }}>
         <div style={labelStyle(THEME.colors.axisY)}>{props.yLabel}</div>
       </Html>
-      <Html position={[0, 0, size + pad]} center distanceFactor={12} zIndexRange={[0, 20]} style={{ pointerEvents: 'none' }}>
+      <Html position={[0, 0, size + pad]} center distanceFactor={12} zIndexRange={[0, 5]} style={{ pointerEvents: 'none' }}>
         <div style={labelStyle(THEME.colors.axisZ)}>{props.zLabel}</div>
       </Html>
     </group>

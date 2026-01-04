@@ -107,7 +107,7 @@ export function CompanyPoints(props: {
           />
 
           {/* 点本体 tooltip + 选中圆环 */}
-          <Html position={activePoint.position} center distanceFactor={10} zIndexRange={[0, 20]} style={{ pointerEvents: 'none' }}>
+          <Html position={activePoint.position} center distanceFactor={10} zIndexRange={[10, 50]} style={{ pointerEvents: 'none' }}>
             <div className={styles.wrap}>
               <div className={styles.ring} />
               <div className={styles.tooltip}>
@@ -139,7 +139,7 @@ export function CompanyPoints(props: {
             position={[activePoint.position[0], 0, 0]}
             center
             distanceFactor={16}
-            zIndexRange={[0, 20]}
+            zIndexRange={[10, 50]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisX, color: THEME.colors.axisX }}>
@@ -150,7 +150,7 @@ export function CompanyPoints(props: {
             position={[0, activePoint.position[1], 0]}
             center
             distanceFactor={16}
-            zIndexRange={[0, 20]}
+            zIndexRange={[10, 50]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisY, color: THEME.colors.axisY }}>
@@ -161,7 +161,7 @@ export function CompanyPoints(props: {
             position={[0, 0, activePoint.position[2]]}
             center
             distanceFactor={16}
-            zIndexRange={[0, 20]}
+            zIndexRange={[10, 50]}
             style={{ pointerEvents: 'none' }}
           >
             <div className={styles.axisValue} style={{ borderColor: THEME.colors.axisZ, color: THEME.colors.axisZ }}>
