@@ -1,0 +1,69 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #1a1a2e;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #16213e;
+  border-bottom: 1px solid #0f3460;
+  flex-shrink: 0;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.label {
+  color: #a0a0a0;
+}
+
+.value {
+  color: #e8e8e8;
+  font-weight: 600;
+}
+
+.status {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.connected {
+  color: #26a69a;
+}
+
+.disconnected {
+  color: #ef5350;
+}
+
+.button {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 4px;
+  background: #0f3460;
+  color: #e8e8e8;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.button:hover {
+  background: #1a4d7a;
+}
+
+.canvas {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}

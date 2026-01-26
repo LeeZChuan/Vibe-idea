@@ -7,6 +7,7 @@
 | 项目 | 路径 | 说明 | 启动 | 打包构建 | 本地预览 |
 | --- | --- | --- | --- | --- | --- |
 | three-scatter | `projects/three-scatter` | React18 + three.js(WebGL) 三维散点图 | `npm run dev:three-scatter` | `npm run build:three-scatter` | `npm run preview:three-scatter` |
+| klinecharts-sse | `projects/klinecharts-sse` | React + klinecharts K线图 + mock SSE 实时推送 demo | `npm run dev:klinecharts-sse` | `npm run build:klinecharts-sse` | `npm run preview:klinecharts-sse` |
 
 ## 根目录统一命令（npm workspaces）
 

@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #1a1a2e;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #16213e;
+  border-bottom: 1px solid #0f3460;
+  flex-shrink: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e8e8e8;
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+}
+
+.link,
+.activeLink {
+  padding: 6px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.link {
+  color: #a0a0a0;
+  background: transparent;
+}
+
+.link:hover {
+  color: #e8e8e8;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.activeLink {
+  color: #fff;
+  background: #0f3460;
+}
+
+.main {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
