@@ -1,0 +1,17 @@
+[Unit]
+Description=Hardware Control Panel Qt
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=panel
+Group=input
+Environment=QT_QPA_PLATFORM=eglfs
+ExecStart=/opt/hardware-control-panel/bin/hardware-control-panel
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
+

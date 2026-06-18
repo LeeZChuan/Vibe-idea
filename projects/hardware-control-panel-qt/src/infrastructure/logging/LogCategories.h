@@ -1,0 +1,9 @@
+#pragma once
+
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logApp)
+Q_DECLARE_LOGGING_CATEGORY(logInput)
+Q_DECLARE_LOGGING_CATEGORY(logMqtt)
+Q_DECLARE_LOGGING_CATEGORY(logDevice)
+

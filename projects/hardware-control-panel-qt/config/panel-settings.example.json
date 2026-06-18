@@ -1,0 +1,11 @@
+{
+  "deviceId": "panel-001",
+  "mqttHost": "127.0.0.1",
+  "mqttPort": 1883,
+  "inputDevicePath": "/dev/input/event0",
+  "longPressMs": 800,
+  "keyRepeatMs": 250,
+  "useMockInput": true,
+  "useMockMqtt": true
+}
+
